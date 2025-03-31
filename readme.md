@@ -1,29 +1,5 @@
 # Flask API
 
-## Estrutura do Projeto
-
-```
-flask_api/
-│── app/
-│   ├── controllers/
-│   │   ├── auth_controller.py
-│   │   ├── user_controller.py
-│   ├── models/
-│   │   ├── user.py
-│   ├── views/
-│   │   ├── auth_routes.py
-│   │   ├── user_routes.py
-│   │   ├── graphql_routes.py
-│   ├── schemas/
-│   │   ├── user_schema.py
-│   ├── __init__.py
-│── config.py
-│── main.py
-│── requirements.txt
-│── .env
-│── migrations/
-```
-
 ## Pré-requisitos
 
 1. Python 3.12
@@ -72,6 +48,31 @@ flask --app main run
 ```
 
 A aplicação estará disponível em `http://127.0.0.1:5000/` por padrão.
+
+
+## Estrutura do Projeto
+
+```
+flask_api/
+│── app/
+│   ├── controllers/
+│   │   ├── auth_controller.py
+│   │   ├── user_controller.py
+│   ├── models/
+│   │   ├── user.py
+│   ├── views/
+│   │   ├── auth_routes.py
+│   │   ├── user_routes.py
+│   │   ├── graphql_routes.py
+│   ├── schemas/
+│   │   ├── user_schema.py
+│   ├── __init__.py
+│── config.py
+│── main.py
+│── requirements.txt
+│── .env
+│── migrations/
+```
 
 ## Arquitetura
 
