@@ -1,6 +1,4 @@
-```markdown
 # Flask API
-
 
 ## Estrutura do Projeto
 
