@@ -71,7 +71,6 @@ flask_api/
 │── main.py
 │── requirements.txt
 │── .env
-│── migrations/
 ```
 
 ## Arquitetura
