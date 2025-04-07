@@ -5,6 +5,46 @@ from flaskApp.app import db
 
 # Create a new user
 def create_user():
+    """
+    Cria um novo usuário
+    ---
+    tags:
+      - Usuários
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - username
+            - email
+            - password
+          properties:
+            username:
+              type: string
+              example: ana.paula
+            email:
+              type: string
+              example: ana@example.com
+            password:
+              type: string
+              example: 123456
+    responses:
+      201:
+        description: Usuário criado com sucesso
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            email:
+              type: string
+      400:
+        description: Erro ao criar usuário
+    """
     try:
         user_data = request.get_json()
         user_schema = UserSchema()
@@ -17,12 +57,58 @@ def create_user():
 
 # Get all users
 def get_users():
+    """
+    Retorna todos os usuários
+    ---
+    tags:
+      - Usuários
+    responses:
+      200:
+        description: Lista de usuários
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              username:
+                type: string
+              email:
+                type: string
+    """
     users = User.query.all()
     user_schema = UserSchema(many=True)
     return jsonify(user_schema.dump(users)), 200
 
 # Get user by ID
 def get_user(user_id):
+    """
+    Retorna um usuário pelo ID
+    ---
+    tags:
+      - Usuários
+    parameters:
+      - name: user_id
+        in: path
+        type: integer
+        required: true
+        description: ID do usuário
+    responses:
+      200:
+        description: Usuário encontrado
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            email:
+              type: string
+      404:
+        description: Usuário não encontrado
+    """
     user = User.query.get(user_id)
     if user:
         user_schema = UserSchema()
@@ -31,6 +117,46 @@ def get_user(user_id):
 
 # Update user by ID
 def update_user(user_id):
+    """
+    Atualiza um usuário pelo ID
+    ---
+    tags:
+      - Usuários
+    parameters:
+      - name: user_id
+        in: path
+        type: integer
+        required: true
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            username:
+              type: string
+              example: novo.usuario
+            email:
+              type: string
+              example: novo@example.com
+            password:
+              type: string
+              example: nova_senha
+    responses:
+      200:
+        description: Usuário atualizado
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            email:
+              type: string
+      404:
+        description: Usuário não encontrado
+    """
     user = User.query.get(user_id)
     if user:
         user_data = request.get_json()
@@ -42,6 +168,28 @@ def update_user(user_id):
 
 # Delete user by ID
 def delete_user(user_id):
+    """
+    Deleta um usuário pelo ID
+    ---
+    tags:
+      - Usuários
+    parameters:
+      - name: user_id
+        in: path
+        type: integer
+        required: true
+    responses:
+      200:
+        description: Usuário deletado
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: User deleted
+      404:
+        description: Usuário não encontrado
+    """
     user = User.query.get(user_id)
     if user:
         db.session.delete(user)
