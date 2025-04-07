@@ -4,12 +4,11 @@
 
 1. Python 3.12
 2. Flask
+3. Docker (opcional para banco de dados PostgreSQL)
 
 ## Configuração do Ambiente
 
 ### 1. Criar o Ambiente Virtual
-
-Para isolar as dependências do projeto, crie um ambiente virtual:
 
 ```bash
 python -m venv venv
@@ -17,23 +16,17 @@ python -m venv venv
 
 ### 2. Ativar o Ambiente Virtual
 
-Ative o ambiente virtual:
+- **Windows**:
+  ```bash
+  .\venv\Scripts\activate
+  ```
 
-- **No Windows**:
-
-```bash
-.\venv\Scripts\Activate
-```
-
-- **No macOS/Linux**:
-
-```bash
-source venv/bin/activate
-```
+- **macOS/Linux**:
+  ```bash
+  source venv/bin/activate
+  ```
 
 ### 3. Instalar as Dependências
-
-Instale o Flask e outras dependências listadas em `requirements.txt`:
 
 ```bash
 pip install -r requirements.txt
@@ -41,14 +34,21 @@ pip install -r requirements.txt
 
 ### 4. Executar a Aplicação
 
-Para rodar a aplicação, use o seguinte comando:
-
 ```bash
 flask --app main run
 ```
 
-A aplicação estará disponível em `http://127.0.0.1:5000/` por padrão.
+A aplicação estará disponível em `http://127.0.0.1:5000/`.
 
+## Recursos da Aplicação
+
+- **Autenticação JWT**: login, logout e refresh token
+- **Seed de dados mockados** usando [Faker](https://faker.readthedocs.io/en/master/)
+- **Criptografia de senhas** com `Werkzeug`
+- **Documentação interativa** com **Swagger UI** via `flasgger`
+
+> Acesse a documentação interativa em:  
+> `http://127.0.0.1:5000/apidocs`
 
 ## Estrutura do Projeto
 
@@ -66,6 +66,8 @@ flask_api/
 │   │   ├── graphql_routes.py
 │   ├── schemas/
 │   │   ├── user_schema.py
+│   ├── seeders/
+│   │   └── seed.py
 │   ├── __init__.py
 │── config.py
 │── main.py
@@ -75,12 +77,10 @@ flask_api/
 
 ## Arquitetura
 
-- **controllers/**: Contém os controladores responsáveis pela lógica de negócios, como autenticação e manipulação de usuários.
-- **models/**: Contém os modelos que definem a estrutura dos dados (por exemplo, usuário).
-- **views/**: Define as rotas e os endpoints da API (autenticação, usuários, etc).
-- **schemas/**: Contém os esquemas de validação para as entradas da API.
-- **config.py**: Arquivo de configuração da aplicação.
-- **main.py**: Ponto de entrada principal para a execução da aplicação.
-- **requirements.txt**: Lista de dependências do projeto.
-- **.env**: Variáveis de ambiente sensíveis, como chaves secretas e configurações do banco de dados.
-- **migrations/**: Contém arquivos de migração do banco de dados (se estiver utilizando algo como SQLAlchemy).
+- **controllers/**: Regras de negócio (ex: autenticação, usuários).
+- **models/**: Modelos do banco de dados.
+- **schemas/**: Validações e serialização de dados com Marshmallow.
+- **views/**: Arquivos de rotas/blueprints da aplicação.
+- **seeders/**: Scripts de carga inicial de dados mockados.
+- **config.py**: Configurações do app (ex: banco, JWT_SECRET).
+- **main.py**: Ponto de entrada da aplicação Flask.
