@@ -12,6 +12,8 @@ def create_user():
     ---
     tags:
       - Usuários
+    security:
+      - BearerAuth: []
     parameters:
       - name: body
         in: body
@@ -91,6 +93,8 @@ def get_user(user_id):
     ---
     tags:
       - Usuários
+    security:
+      - BearerAuth: []
     parameters:
       - name: user_id
         in: path
@@ -126,6 +130,8 @@ def update_user(user_id):
     ---
     tags:
       - Usuários
+    security:
+      - BearerAuth: []
     parameters:
       - name: user_id
         in: path
@@ -178,6 +184,8 @@ def delete_user(user_id):
     ---
     tags:
       - Usuários
+    security:
+      - BearerAuth: []
     parameters:
       - name: user_id
         in: path
