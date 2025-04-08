@@ -1,9 +1,11 @@
 from flask import request, jsonify
+from flask_jwt_extended import jwt_required
 from flaskApp.app.models.user import User
 from flaskApp.app.schemas.user_schema import UserSchema
 from flaskApp.app import db
 
 # Create a new user
+@jwt_required()
 def create_user():
     """
     Cria um novo usuário
@@ -82,6 +84,7 @@ def get_users():
     return jsonify(user_schema.dump(users)), 200
 
 # Get user by ID
+@jwt_required()
 def get_user(user_id):
     """
     Retorna um usuário pelo ID
@@ -116,6 +119,7 @@ def get_user(user_id):
     return jsonify({"error": "User not found"}), 404
 
 # Update user by ID
+@jwt_required()
 def update_user(user_id):
     """
     Atualiza um usuário pelo ID
@@ -167,6 +171,7 @@ def update_user(user_id):
     return jsonify({"error": "User not found"}), 404
 
 # Delete user by ID
+@jwt_required()
 def delete_user(user_id):
     """
     Deleta um usuário pelo ID
