@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   postgres:
     image: postgres:latest
@@ -30,8 +32,8 @@ services:
 
   web:
     build:
-      context: .
-      dockerfile: ./flaskApp/Dockerfile
+      context: ./API
+      dockerfile: flaskApp/Dockerfile
     container_name: projN3_web
     environment:
       - FLASK_APP=main.py
@@ -41,20 +43,34 @@ services:
     depends_on:
       - postgres
     volumes:
-      - .:/app
+      - ./API:/app
     networks:
       - app_network
 
-  version: '3.8'
+  chatbot:
+    build:
+      context: ./Chatbot
+      dockerfile: chatbotApp/Dockerfile
+    container_name: projN3_chatbot
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./Chatbot:/app
+    depends_on:
+      - postgres
+    networks:
+      - app_network
 
-cloudbeaver:
-  image: dbeaver/cloudbeaver:latest
-  container_name: cloudbeaver
-  ports:
-    - "8978:8978"
-  volumes:
-    - cloudbeaver-data:/opt/cloudbeaver/workspace
-  restart: always
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: cloudbeaver
+    ports:
+      - "8978:8978"
+    volumes:
+      - cloudbeaver-data:/opt/cloudbeaver/workspace
+    restart: always
+    networks:
+      - app_network
 
 volumes:
   cloudbeaver-data:
