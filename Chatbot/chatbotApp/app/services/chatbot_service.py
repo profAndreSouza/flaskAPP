@@ -1,15 +1,20 @@
 import os
-from langchain.chat_models import ChatOpenAI
-from langchain.chains import ConversationChain
-from langchain.memory import ConversationBufferMemory
 from dotenv import load_dotenv
+import google.generativeai as genai
+from google.api_core.exceptions import GoogleAPIError
 
 load_dotenv()
 
-llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"),
-                 temperature=0.7)
-memory = ConversationBufferMemory()
-conversation = ConversationChain(llm=llm, memory=memory)
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
-def get_bot_response(user_input):
-    return conversation.predict(input=user_input)
+model = genai.GenerativeModel("gemini-1.5-pro")
+chat_session = model.start_chat(history=[])
+
+def get_bot_response(user_input: str) -> str:
+    try:
+        response = chat_session.send_message(user_input)
+        return response.text
+    except GoogleAPIError as e:
+        return f"[Erro Gemini API] Código: {e.code if hasattr(e, 'code') else 'desconhecido'} - {str(e)}"
+    except Exception as e:
+        return f"[Erro inesperado] {str(e)}"

@@ -1,21 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Chatbot Interface</title>
     <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .chat-box {
+            max-height: 500px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            width: fit-content;
+            max-width: 90%;
+        }
+
+        .user {
+            background-color: #e1f5fe;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+
+        .bot {
+            background-color: #e8f5e9;
+            align-self: flex-start;
+            margin-right: auto;
+        }
+
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Chatbot</h1>
+        <h1>Chatbot com Histórico</h1>
+
+        <div class="chat-box">
+            {% for entry in chat_history %}
+                <div class="message user"><strong>Você:</strong> {{ entry.user }}</div>
+                <div class="message bot"><strong>Bot:</strong> {{ entry.bot }}</div>
+            {% endfor %}
+        </div>
+
         <form method="POST">
-            <input type="text" name="message" placeholder="Digite sua mensagem" required>
+            <input type="text" name="message" placeholder="Digite sua mensagem..." required autofocus>
             <button type="submit">Enviar</button>
         </form>
-        {% if user_input %}
-            <p><strong>Você:</strong> {{ user_input }}</p>
-            <p><strong>Bot:</strong> {{ bot_response }}</p>
-        {% endif %}
     </div>
 </body>
 </html>
