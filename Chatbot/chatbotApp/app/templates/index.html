@@ -30,32 +30,26 @@
             max-height: 500px;
             overflow-y: auto;
             margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .message {
-            margin-bottom: 15px;
             padding: 10px 15px;
             border-radius: 10px;
-            width: fit-content;
             max-width: 90%;
+            white-space: pre-wrap;
         }
 
         .user {
             background-color: #e1f5fe;
             align-self: flex-end;
-            margin-left: auto;
         }
 
         .bot {
             background-color: #e8f5e9;
             align-self: flex-start;
-            margin-right: auto;
-        }
-
-        .chat-box {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
         }
 
         form {
@@ -82,6 +76,31 @@
         button:hover {
             background-color: #45a049;
         }
+
+        /* Markdown basic style overrides */
+        .bot h1, .bot h2, .bot h3 {
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .bot code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .bot pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        .bot a {
+            color: #1a0dab;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -91,7 +110,7 @@
         <div class="chat-box">
             {% for entry in chat_history %}
                 <div class="message user"><strong>Você:</strong> {{ entry.user }}</div>
-                <div class="message bot"><strong>Bot:</strong> {{ entry.bot }}</div>
+                <div class="message bot"><strong>Bot:</strong> {{ entry.bot | safe }}</div>
             {% endfor %}
         </div>
 
