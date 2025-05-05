@@ -1,6 +1,7 @@
 from app import create_app
 from app.nlp.text_processor import TextPreProcessor
 from app.nlp.syntatic_analyzer import SyntaticAnalyzer
+from app.nlp.semantic_analyzer import SemanticAnalyzer
 
 app = create_app()
 
@@ -23,10 +24,14 @@ def index():
         syntatic = SyntaticAnalyzer()
         sintaxe = syntatic.analyze(preprocessado)
 
+        semantic = SemanticAnalyzer()
+        entity, intent = semantic.extract_intent_and_intentions(enunciado)
+
         resposta.append({
             "Original": enunciado,
             "Pré-processado": preprocessado ,
-            "Sintaxe": sintaxe
+            "Entidades": entity,
+            "Intenção": intent
         })
     
     return resposta
