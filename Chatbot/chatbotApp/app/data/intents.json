@@ -1,0 +1,7 @@
+{
+    "iniciar_separacao": ["iniciar", "começar", "separação", "comece", "inicie", "iniciando"],
+    "reportar_erro": ["erro", "falha", "problema", "não funcionou", "bug"],
+    "verificar_status": ["status", "situação", "andamento", "foi finalizado", "como está"],
+    "quantidade_insuficiente": ["faltando", "não tem", "quantidade baixa", "insuficiente"]
+  }
+  

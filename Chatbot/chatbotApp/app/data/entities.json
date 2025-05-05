@@ -1,0 +1,28 @@
+{
+    "codigo": {
+      "patterns": [
+        "\\b(peça|pedido|ordem)\\s*(\\d+)"
+      ],
+      "grupo": 2
+    },
+    "quantidade": {
+      "patterns": [
+        "\\bquantidade\\s*(\\d+)"
+      ],
+      "grupo": 1
+    },
+    "operador": {
+      "patterns": [
+        "operador\\s+([A-Za-z]+)"
+      ],
+      "grupo": 1
+    },
+    "data": {
+      "patterns": [
+        "\\bhoje\\b",
+        "\\bagora\\b"
+      ],
+      "grupo": null
+    }
+  }
+  
