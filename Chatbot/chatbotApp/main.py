@@ -1,36 +1,49 @@
+from flask import Flask, jsonify
 from app import create_app
-from app.nlp.text_processor import TextPreProcessor
-from app.nlp.semantic_analyzer import SemanticAnalyzer
+from app.services.nlp_service import NLPService
+from app.services.gemini_service import GeminiService
+import json
 
 app = create_app()
 
 @app.route('/')
 def index():
-    questions = [
-        "Quantas peças de cada tipo (metálicas, plásticas, refugos) são processadas por hora e qual é a taxa média de acerto da classificação?",
-        "Quais são as etapas envolvidas no processo de classificação, desde a entrada da peça até sua separação final?",
-        "Como o sistema identifica e diferencia materiais metálicos, plásticos e refugos? (Ex: sensores, visão computacional, inteligência artificial?)",
-        "Existe algum controle de qualidade ou verificação humana posterior à classificação automática para evitar erros?",
-        "Qual é a taxa de refugo do sistema — ou seja, quantas peças são classificadas como refugo por engano ou por não atenderem aos critérios definidos?"
-    ]
+    # Lê o arquivo de perguntas
+    with open('app/data/questions.json', 'r', encoding='utf-8') as f:
+        questions = json.load(f)
 
-    response = []
-    for statements in questions:
+    nlp = NLPService()
+    gemini = GeminiService()
 
-        preprocessor = TextPreProcessor()
-        clean_statements = preprocessor.preprocess(statements)
-    
-        semantic = SemanticAnalyzer()
-        intents, entities = semantic.extract_intent_and_entities(clean_statements)
+    results = []
 
-        response.append({
-            "Original": statements,
-            "Pré-processado": clean_statements ,
-            "Entidades": entities,
-            "Intenção": intents
-        })
-    
-    return response
+    for prompt in questions:
+        nlp_result = nlp.process_text(prompt)
+        gemini_result = gemini.get_response_json(prompt)
+
+        result = {
+            "Original": prompt,
+            "NLP": {
+                "Intent": nlp_result["Intent"],
+                "Entities": nlp_result["Entities"]
+            }
+        }
+
+        if "erro" in gemini_result:
+            result["Gemini"] = {
+                "Erro": gemini_result["erro"],
+                "Resposta": gemini_result.get("resposta_crua", "desconhecida")
+            }
+        else:
+            result["Gemini"] = {
+                "Intent": gemini_result.get("Intent", "desconhecida"),
+                "Entities": gemini_result.get("Entities", {})
+            }
+
+        results.append(result)
+        break
+
+    return jsonify(results)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
