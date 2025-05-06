@@ -31,8 +31,8 @@ def index():
 
         if "erro" in gemini_result:
             result["Gemini"] = {
-                "Erro": gemini_result["erro"],
-                "Resposta": gemini_result.get("resposta_crua", "desconhecida")
+                "Erro": gemini_result["Erro"],
+                "Resposta": gemini_result.get("Resposta", "desconhecida")
             }
         else:
             result["Gemini"] = {
@@ -41,7 +41,6 @@ def index():
             }
 
         results.append(result)
-        break
 
     return jsonify(results)
 

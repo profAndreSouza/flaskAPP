@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import markdown
 from dotenv import load_dotenv
@@ -37,10 +38,10 @@ class GeminiService:
 
         Saída esperada:
         {{
-            "Entidades": {{
+            "Entities": {{
                 "material": true
             }},
-            "Intenção": "verificar_status"
+            "Intent": "verificar_status"
         }}
 
         Lembre-se de identificar corretamente as entidades e a intenção conforme o conteúdo da entrada.
@@ -62,21 +63,29 @@ class GeminiService:
         try:
             response = self.chat_session.send_message(prompt)
             content = response.text.strip()
-            try:
-                response_json = json.loads(content)
-                return {
-                    "Intent": response_json.get("Intenção", "desconhecida"),
-                    "Entities": response_json.get("Entidades", {})
-                }
-            except json.JSONDecodeError:
-                return {
-                    "erro": "Não foi possível interpretar o JSON retornado pela API.",
-                    "resposta_crua": content  # opcional para depuração
-                }
+            match = re.search(r"```json\s*(\{.*?\})\s*```", content, re.DOTALL)
+            if match:
+                json_block = match.group(1)
+                try:
+                    # print(content)
+                    return json.loads(json_block)
+                except json.JSONDecodeError:
+                    return {
+                        "Erro": "Não foi possível interpretar o JSON retornado pela API.",
+                        "Resposta": json_block
+                    }
             
-        except json.JSONDecodeError:
-            return {"erro": "Não foi possível interpretar o JSON retornado pela API."}
+        
+            return {
+                        "Erro": "Bloco JSON não encontrado na resposta da API.",
+                        "Resposta": content
+                    }
+
         except GoogleAPIError as e:
-            return {"erro": f"[Erro Gemini API] Código: {e.code if hasattr(e, 'code') else 'desconhecido'} - {str(e)}"}
+            return {
+                "Erro": f"[Erro Gemini API] Código: {e.code if hasattr(e, 'code') else 'desconhecido'} - {str(e)}"
+            }
         except Exception as e:
-            return {"erro": f"[Erro inesperado] {str(e)}"}
+            return {
+                "Erro": f"[Erro inesperado] {str(e)}"
+            }
