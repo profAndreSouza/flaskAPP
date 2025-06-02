@@ -2,8 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flasgger import Swagger
-from flaskApp.config import Config
 from flask_jwt_extended import JWTManager
+from flaskApp.config import Config
 
 jwt = JWTManager()
 db = SQLAlchemy()

@@ -1,6 +1,0 @@
-{
-  "iniciar_separacao": ["iniciar", "começar", "separação", "classificação", "processo", "etapas"],
-  "reportar_erro": ["erro", "falha", "problema", "bug", "verificação humana", "evitar erros"],
-  "verificar_status": ["status", "situação", "taxa", "acerto", "andamento", "qual é", "como está"],
-  "quantidade_insuficiente": ["faltando", "não tem", "quantidade baixa", "insuficiente"]
-}

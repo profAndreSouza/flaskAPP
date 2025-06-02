@@ -46,6 +46,16 @@ class GeminiService:
 
         Lembre-se de identificar corretamente as entidades e a intenção conforme o conteúdo da entrada.
         """
+    
+    def get_response(self, text: str) -> str:
+        try:
+            response = self.chat_session.send_message(text)
+            html_response = markdown.markdown(response.text)
+            return html_response
+        except GoogleAPIError as e:
+            return f"[Erro Gemini API] Código: {e.code if hasattr(e, 'code') else 'desconhecido'} - {str(e)}"
+        except Exception as e:
+            return f"[Erro inesperado] {str(e)}"
 
     def get_response_html(self, user_input: str) -> str:
         try:

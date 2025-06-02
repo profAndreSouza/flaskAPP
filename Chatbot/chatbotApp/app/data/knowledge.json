@@ -1,0 +1,110 @@
+{
+  "intents": {
+    "iniciar_separacao": {
+      "keywords": ["iniciar", "começar", "separação", "classificação", "processo", "etapas"],
+      "response": "O processo começa com a leitura da peça, passa pela análise e segue até a separação física nos compartimentos."
+    },
+    "reportar_erro": {
+      "keywords": ["erro", "falha", "problema", "bug", "verificação humana", "evitar erros"],
+      "response": "Existe uma verificação humana após o processo automático para evitar erros."
+    },
+    "verificar_status": {
+      "keywords": ["status", "situação", "taxa", "acerto", "andamento", "qual é", "como está"],
+      "response": "A taxa média de acerto da classificação é de 98% e o sistema está operando normalmente."
+    },
+    "quantidade_insuficiente": {
+      "keywords": ["faltando", "não tem", "quantidade baixa", "insuficiente"],
+      "response": "Quantidade insuficiente detectada. Será necessário reabastecimento ou nova programação."
+    },
+    "pausar_processo": {
+      "keywords": ["parar", "pausar", "interromper", "suspender", "paralisação"],
+      "response": "O processo foi pausado temporariamente. Você pode retomá-lo a qualquer momento."
+    },
+    "retomar_processo": {
+      "keywords": ["retomar", "continuar", "reiniciar", "reanudar", "prosseguir"],
+      "response": "O processo de separação foi retomado com sucesso."
+    },
+    "listar_pecas_em_espera": {
+      "keywords": ["fila", "pendente", "espera", "aguardando", "não iniciadas"],
+      "response": "Listando as peças atualmente na fila de espera para separação."
+    },
+    "tempo_estimado": {
+      "keywords": ["tempo", "duração", "quanto tempo", "previsão", "estimativa"],
+      "response": "O tempo estimado para conclusão será calculado com base na fila e taxa atual."
+    },
+    "consultar_historico": {
+      "keywords": ["histórico", "registro", "log", "atividade anterior", "últimos processos"],
+      "response": "Consultando histórico recente de processos e ações realizadas no sistema."
+    },
+    "verificar_estoque": {
+      "keywords": ["estoque", "disponibilidade", "tem no estoque", "quantas tem", "existência"],
+      "response": "Verificando disponibilidade atual no estoque de materiais e peças."
+    },
+    "cancelar_acao": {
+      "keywords": ["cancelar", "anular", "desfazer", "revogar", "interromper pedido"],
+      "response": "A ação foi cancelada com sucesso. Nenhuma modificação foi aplicada."
+    },
+    "atualizar_parametros": {
+      "keywords": ["ajustar", "modificar", "atualizar", "parametrizar", "alterar valores"],
+      "response": "Os parâmetros do sistema foram atualizados conforme solicitado."
+    },
+    "consultar_producao_24h": {
+      "keywords": ["quantidade", "produção", "produzidas", "últimas 24 horas", "hoje", "último dia"],
+      "response": "API_DB_QUERY::producao_24h"
+    },
+    "consultar_producao_tipo": {
+      "keywords": ["quantas peças", "cada tipo", "processadas por hora", "metálicas", "plásticas", "refugos", "produção por tipo"],
+      "response": "API_DB_QUERY::producao_por_tipo"
+    }
+
+  },
+  "entities": {
+    "codigo": {
+      "patterns": ["\\b(peça|pedido|ordem)\\s*(\\d+)"],
+      "grupo": 2
+    },
+    "quantidade": {
+      "patterns": [
+        "\\bquantidade\\s*(\\d+)",
+        "\\b(\\d+)\\s*(unidades|peças|itens)?"
+      ],
+      "grupo": 1
+    },
+    "material": {
+      "patterns": ["\\b(metálicas|plásticas|refugos|vidro|papelão|alumínio)\\b"],
+      "grupo": null
+    },
+    "taxa": {
+      "patterns": ["\\btaxa média de acerto\\b", "\\btaxa de refugo\\b", "\\btaxa de produtividade\\b"],
+      "grupo": null
+    },
+    "tempo": {
+      "patterns": ["\\b(\\d+)\\s*(minutos|min|horas|h)\\b", "\\btempo estimado\\b"],
+      "grupo": 1
+    },
+    "data": {
+      "patterns": ["\\b(\\d{2}/\\d{2}/\\d{4})\\b", "\\b(hoje|ontem|últimos dias)\\b"],
+      "grupo": 1
+    },
+    "usuario": {
+      "patterns": ["\\busuário\\s*([a-zA-Z0-9_]+)\\b", "\\boperador\\s*([a-zA-Z0-9_]+)\\b"],
+      "grupo": 1
+    },
+    "prioridade": {
+      "patterns": ["\\b(prioridade\\s*(alta|média|baixa))\\b"],
+      "grupo": 2
+    },
+    "linha": {
+      "patterns": ["\\blinha\\s*(\\d+)\\b", "\\bestação\\s*(\\d+)\\b"],
+      "grupo": 1
+    },
+    "erro_codigo": {
+      "patterns": ["\\berro\\s*(\\d{3,4})\\b"],
+      "grupo": 1
+    },
+    "componente": {
+      "patterns": ["\\bsensor(es)?\\b", "\\bmotor(es)?\\b", "\\batua(dor(es)?)?\\b"],
+      "grupo": null
+    }
+  }
+}

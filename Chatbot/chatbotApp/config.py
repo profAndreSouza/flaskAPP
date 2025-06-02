@@ -1,10 +1,9 @@
 import os
 
 class Config:
-  SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "postgresql://admin:admin@postgres:5432/projDB")
-  SQLALCHEMY_TRACK_MODIFICATIONS = False
-
   JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "chave-secreta-para-assinar-e-verificar-a-autenticidade-dos-tokens-JWT")
+  
+  SESSION_TYPE = 'filesystem'
 
   SWAGGER_TEMPLATE = {
     "swagger": "2.0",
