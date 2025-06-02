@@ -1,6 +1,7 @@
 import os
 import json
 import re
+import requests
 from chatbotApp.app.nlp.syntatic_analyzer import SyntaticAnalyzer
 
 
@@ -50,14 +51,15 @@ class SemanticAnalyzer:
         """Retorna a resposta da base de conhecimento, do banco ou da IA."""
         intents_knowledge = self.knowledge.get("intents", {})
         response = intents_knowledge.get(intent, {}).get("response")
+        action = intents_knowledge.get(intent, {}).get("action")
 
         if response:
             try:
                 return response.format(**entities)
             except KeyError:
-                return response  # retorna mesmo se faltar entidade
-        elif intent in self.knowledge.get("fallback_database", []):
-            return self._query_database(intent, entities)
+                return response
+        elif action:
+            return self._query_database(action, entities)
         elif intent == "intencao_desconhecida":
             return self._ask_ai(text)
         else:
@@ -66,12 +68,23 @@ class SemanticAnalyzer:
                 "Consultando fontes alternativas para te ajudar melhor."
             )
 
+    def _query_database(self, action, entities):
 
+        clean_action = action.replace("API_DB_QUERY::", "")
+        payload = {
+            "action": clean_action,
+            "entities": entities
+        }
 
-    def _query_database(self, entities):
-        # Chamada simulada para API de banco de dados
-        # Exemplo: número de peças nas últimas 24h
-        return f"consultar_quantidade_produzida(entities)"
+        try:
+            response = requests.post(f"http://localhost:5000/query", json=payload)
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return {"error": f"Erro na consulta: {response.status_code}", "details": response.text}
+
+        except requests.exceptions.RequestException as e:
+            return {"error": "Erro ao conectar com a API de consulta", "details": str(e)}
 
     def _ask_ai(self, text):
         # Chamada real para a IA (Gemini, GPT, etc.)

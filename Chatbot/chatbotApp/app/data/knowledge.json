@@ -50,11 +50,11 @@
     },
     "consultar_producao_24h": {
       "keywords": ["quantidade", "produção", "produzidas", "últimas 24 horas", "hoje", "último dia"],
-      "response": "API_DB_QUERY::producao_24h"
+      "action": "API_DB_QUERY::producao_24h"
     },
     "consultar_producao_tipo": {
       "keywords": ["quantas peças", "cada tipo", "processadas por hora", "metálicas", "plásticas", "refugos", "produção por tipo"],
-      "response": "API_DB_QUERY::producao_por_tipo"
+      "action": "API_DB_QUERY::producao_por_tipo"
     }
 
   },
@@ -71,7 +71,7 @@
       "grupo": 1
     },
     "material": {
-      "patterns": ["\\b(metálicas|plásticas|refugos|vidro|papelão|alumínio)\\b"],
+      "patterns": ["\\b(metálicas|plásticas|refugos)\\b"],
       "grupo": null
     },
     "taxa": {
